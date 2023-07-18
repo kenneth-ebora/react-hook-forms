@@ -1,0 +1,10 @@
+.row-selected {
+  background: rgb(240 213 255);
+  font-weight: bold;
+}
+
+.row-selected + tr {
+  background: rgb(240 213 255);
+  font-weight: bold;
+
+}
