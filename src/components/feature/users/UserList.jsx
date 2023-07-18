@@ -52,7 +52,6 @@ const userList = [
 
 const UserList = () => {
   const [isAddModalOpened, setIsAddModalOpened] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
   const [collapsedIndices, setCollapsedIndices] = useState([]);
 
   const handleClose = () => setIsAddModalOpened(false);
@@ -60,10 +59,6 @@ const UserList = () => {
   const onCheckRow = (selectedRows) => {
     const selectedUsers = selectedRows.map((index) => userList[index]);
   };
-
-  useEffect(() => {
-    renderTable();
-  }, [isDisabled]);
 
   const renderTable = () => {
     return (
@@ -153,15 +148,6 @@ const UserList = () => {
             color="primary"
             variant="contained"
             onClick={() => setIsAddModalOpened(true)}
-          >
-            Add New
-          </Button>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-              setIsDisabled((current) => !current);
-            }}
           >
             Add New
           </Button>
