@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Table, TableBody, TableHead } from "@mui/material";
 import {
+  Fragment,
   cloneElement,
   createElement,
   createRef,
@@ -89,6 +90,7 @@ const SelectableTable = ({ tableHead, tableBody, onCheckRow }) => {
           onSelect: onCheckBodyRow,
           highlightOnSelect: true,
           ref: bodyRefs[index],
+          key: row.key,
           ...target.props,
         });
 
@@ -101,7 +103,13 @@ const SelectableTable = ({ tableHead, tableBody, onCheckRow }) => {
           return rowChild;
         });
 
-        return targetSelectableRow;
+        const test = createElement(
+          Fragment,
+          { key: row.key },
+          targetSelectableRow
+        );
+        console.log(test);
+        return test;
       }
     }
 

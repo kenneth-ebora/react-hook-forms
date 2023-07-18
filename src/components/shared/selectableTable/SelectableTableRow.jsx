@@ -1,6 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Checkbox, TableCell, TableRow } from "@mui/material";
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import {
+  forwardRef,
+  useId,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 
 import "./SelectableTableRow.css";
 

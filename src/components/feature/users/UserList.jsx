@@ -65,8 +65,6 @@ const UserList = () => {
     renderTable();
   }, [isDisabled]);
 
-  console.log(collapsedIndices);
-
   const renderTable = () => {
     return (
       <SelectableTable
@@ -84,7 +82,11 @@ const UserList = () => {
 
           return (
             <Fragment key={user.id}>
-              <SelectableTableRow checkboxProps={{ disabled: isDisabled }}>
+              <SelectableTableRow
+                key={user.id}
+                selectable
+                checkboxProps={{ disabled: true }}
+              >
                 <TableCell component="td">{user.firstName}</TableCell>
                 <TableCell component="td">{user.lastName}</TableCell>
                 <TableCell component="td">
@@ -111,7 +113,7 @@ const UserList = () => {
                   </IconButton>
                 </TableCell>
               </SelectableTableRow>
-              <TableRow checkboxProps={{ disabled: isDisabled }}>
+              <TableRow>
                 <TableCell sx={{ p: 0, border: "none" }} colSpan={6}>
                   <Collapse in={isCollapsed}>
                     <Box
