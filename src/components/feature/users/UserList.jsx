@@ -1,21 +1,18 @@
 import {
   Box,
   Button,
-  Collapse,
   Dialog,
   DialogTitle,
-  IconButton,
   Paper,
   Stack,
   TableCell,
-  TableRow,
   Typography,
 } from "@mui/material";
-import { Fragment, useEffect, useState } from "react";
+import { useState } from "react";
 import UserForm from "./components/UserForm";
-import SelectableTableRow from "../../shared/selectableTable/SelectableTableRow";
-import SelectableTable from "../../shared/selectableTable/SelectableTable";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import CheckedTable from "../../shared/controls/checkedTable/checkedTable";
+import CheckedRow from "../../shared/controls/checkedTable/CheckedRow";
+import { useCheckedTable } from "../../shared/controls/checkedTable/useCheckedTable";
 
 const userList = [
   {
@@ -27,6 +24,7 @@ const userList = [
       id: 1,
       roleName: "Admin",
     },
+    isChecked: false,
   },
   {
     id: 2,
@@ -37,6 +35,7 @@ const userList = [
       id: 1,
       roleName: "Admin",
     },
+    isChecked: false,
   },
   {
     id: 3,
@@ -47,86 +46,69 @@ const userList = [
       id: 2,
       roleName: "Viewer",
     },
+    isChecked: false,
   },
 ];
 
 const UserList = () => {
+  const {
+    dataList: finalUserList,
+    isAllChecked,
+    onCheckAll,
+    onCheck,
+  } = useCheckedTable(userList);
   const [isAddModalOpened, setIsAddModalOpened] = useState(false);
-  const [collapsedIndices, setCollapsedIndices] = useState([]);
 
   const handleClose = () => setIsAddModalOpened(false);
 
-  const onCheckRow = (selectedRows) => {
-    const selectedUsers = selectedRows.map((index) => userList[index]);
-  };
-
   const renderTable = () => {
     return (
-      <SelectableTable
+      <CheckedTable
         tableHead={
-          <SelectableTableRow>
+          <CheckedRow
+            component="th"
+            isChecked={isAllChecked}
+            onChange={onCheckAll}
+          >
             <TableCell component="th">First Name</TableCell>
             <TableCell component="th">Last Name</TableCell>
             <TableCell component="th">Status</TableCell>
             <TableCell component="th">Role</TableCell>
-            <TableCell component="th"></TableCell>
-          </SelectableTableRow>
+            <TableCell component="th" />
+          </CheckedRow>
         }
-        tableBody={userList.map((user, index) => {
-          const isCollapsed = collapsedIndices.includes(index);
-
-          return (
-            <Fragment key={user.id}>
-              <SelectableTableRow
-                key={user.id}
-                selectable
-                checkboxProps={{ disabled: true }}
+        tableBody={finalUserList.map((user, index) => (
+          <CheckedRow
+            key={user.id}
+            component="td"
+            isChecked={user.isChecked}
+            onChange={(checked) => onCheck(index, checked)}
+          >
+            <TableCell component="td">{user.firstName}</TableCell>
+            <TableCell component="td">{user.lastName}</TableCell>
+            <TableCell component="td">{user.isActive ? "Yes" : "No"}</TableCell>
+            <TableCell component="td">{user.role.roleName}</TableCell>
+            <TableCell>
+              {/* <IconButton
+                aria-label="chevron"
+                onClick={() => {
+                  if (isCollapsed) {
+                    setCollapsedIndices((current) => {
+                      return current.filter((exIndex) => exIndex !== index);
+                    });
+                  } else {
+                    setCollapsedIndices((current) => {
+                      current.push(index);
+                      return [...current];
+                    });
+                  }
+                }}
               >
-                <TableCell component="td">{user.firstName}</TableCell>
-                <TableCell component="td">{user.lastName}</TableCell>
-                <TableCell component="td">
-                  {user.isActive ? "Yes" : "No"}
-                </TableCell>
-                <TableCell component="td">{user.role.roleName}</TableCell>
-                <TableCell>
-                  <IconButton
-                    aria-label="chevron"
-                    onClick={() => {
-                      if (isCollapsed) {
-                        setCollapsedIndices((current) => {
-                          return current.filter((exIndex) => exIndex !== index);
-                        });
-                      } else {
-                        setCollapsedIndices((current) => {
-                          current.push(index);
-                          return [...current];
-                        });
-                      }
-                    }}
-                  >
-                    <KeyboardArrowDownIcon />
-                  </IconButton>
-                </TableCell>
-              </SelectableTableRow>
-              <TableRow>
-                <TableCell sx={{ p: 0, border: "none" }} colSpan={6}>
-                  <Collapse in={isCollapsed}>
-                    <Box
-                      sx={{
-                        padding: "1rem",
-                        borderBottom: "1px solid #ddd",
-                        background: "#efefef",
-                      }}
-                    >
-                      More User Details
-                    </Box>
-                  </Collapse>
-                </TableCell>
-              </TableRow>
-            </Fragment>
-          );
-        })}
-        onCheckRow={onCheckRow}
+                <KeyboardArrowDownIcon />
+              </IconButton> */}
+            </TableCell>
+          </CheckedRow>
+        ))}
       />
     );
   };
