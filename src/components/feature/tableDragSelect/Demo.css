@@ -4,6 +4,8 @@
   text-align: center;
   background: coral;
   position: relative;
+  cursor: crosshair;
+  box-sizing: border-box;
 }
 
 td.name-cell {
@@ -22,8 +24,8 @@ td.name-cell {
 
 /* Cells that cannot be interacted with */
 .table-drag-select td.cell-disabled {
-  /* Put yer css here */
   background: black !important;
+  cursor: not-allowed
 }
 
 /* Cells that have been selected */

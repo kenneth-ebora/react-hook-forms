@@ -91,6 +91,12 @@ export const TableDragSelect = ({
                 onTouchMove={handleTouchMoveCell}
                 task={value[i].tasks[j - 1]}
                 beingSelected={isCellBeingSelected(i, j - 1)}
+                cellRow={i}
+                cellColumn={j}
+                startRow={startRow}
+                startColumn={startColumn}
+                endRow={endRow}
+                endColumn={endColumn}
                 {...cell.props}
               >
                 {cell.props.children}
@@ -127,6 +133,12 @@ const Cell = (props) => {
     onTouchStart,
     onTouchMove,
     task,
+    cellRow,
+    cellColumn,
+    startRow,
+    startColumn,
+    endRow,
+    endColumn,
     ...otherProps
   } = props;
 
@@ -154,6 +166,28 @@ const Cell = (props) => {
 
     if (beingSelected) {
       className += " cell-being-selected";
+
+      if (cellRow === startRow) {
+        style = { ...style, borderTop: "2px dashed black" };
+      }
+
+      if (cellRow === endRow) {
+        style = { ...style, borderBottom: "2px dashed black" };
+      }
+
+      if (
+        (cellColumn - 1 === startColumn && endColumn >= startColumn) ||
+        (cellColumn - 1 === endColumn && startColumn >= endColumn)
+      ) {
+        style = { ...style, borderLeft: "2px dashed black" };
+      }
+
+      if (
+        (cellColumn - 1 === endColumn && endColumn >= startColumn) ||
+        (cellColumn - 1 === startColumn && startColumn >= endColumn)
+      ) {
+        style = { ...style, borderRight: "2px dashed black" };
+      }
     }
   }
 
