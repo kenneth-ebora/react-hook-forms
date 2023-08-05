@@ -1,6 +1,6 @@
 ul {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 0.5rem;
 }
 

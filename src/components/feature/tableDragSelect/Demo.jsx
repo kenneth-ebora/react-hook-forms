@@ -5,6 +5,7 @@ import moment from "moment-timezone";
 import "./Demo.css";
 import TaskList from "./TaskList";
 import { DemoContext } from "./DemoContext";
+import { Box, Stack } from "@mui/material";
 
 export const Demo = () => {
   const { userList, setUserList, selectedTask } = useContext(DemoContext);
@@ -94,24 +95,27 @@ export const Demo = () => {
   };
 
   return (
-    <div>
+    <Stack direction="row" gap={5}>
       <TaskList />
 
-      <table className="table-drag-select">
-        <tbody>{renderCountCells()}</tbody>
-        <tbody>{renderHeaders()}</tbody>
-      </table>
-      <table className="table-drag-select">
-        <TableDragSelect
-          value={userList}
-          selectedTask={selectedTask}
-          onChange={handleChange}
-        >
-          {renderCells()}
-        </TableDragSelect>
-      </table>
-      <button onClick={handleReset}>Reset</button>
-    </div>
+      <Box>
+        <h3>Hey Management</h3>
+        <table className="table-drag-select">
+          <tbody>{renderCountCells()}</tbody>
+          <tbody>{renderHeaders()}</tbody>
+        </table>
+        <table className="table-drag-select">
+          <TableDragSelect
+            value={userList}
+            selectedTask={selectedTask}
+            onChange={handleChange}
+          >
+            {renderCells()}
+          </TableDragSelect>
+        </table>
+        <button onClick={handleReset}>Reset</button>
+      </Box>
+    </Stack>
   );
 };
 
