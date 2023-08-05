@@ -1,9 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react";
-import PropTypes from "prop-types";
 
-export const TableDragSelect = (props) => {
+export const TableDragSelect = ({
+  children,
+  value,
+  onChange,
+  selectedTask,
+}) => {
   const [selectionStarted, setSelectionStarted] = useState(false);
   const [startRow, setStartRow] = useState(null);
   const [startColumn, setStartColumn] = useState(null);
@@ -15,7 +19,7 @@ export const TableDragSelect = (props) => {
       const isLeftClick = e.button === 0;
       const isTouch = e.type !== "mousedown";
       if (selectionStarted && (isLeftClick || isTouch)) {
-        const value = [...props.value];
+        const newValue = [...value];
         const minRow = Math.min(startRow, endRow);
         const maxRow = Math.max(startRow, endRow);
         for (let row = minRow; row <= maxRow; row++) {
@@ -23,11 +27,11 @@ export const TableDragSelect = (props) => {
           const maxColumn = Math.max(startColumn, endColumn);
 
           for (let column = minColumn; column <= maxColumn; column++) {
-            value[row].tasks[column] = props.selectedTask;
+            newValue[row].tasks[column] = selectedTask;
           }
         }
         setSelectionStarted(false);
-        props.onChange(value);
+        onChange(newValue);
       }
     };
 
@@ -38,7 +42,16 @@ export const TableDragSelect = (props) => {
       window.removeEventListener("mouseup", handleTouchEndWindow);
       window.removeEventListener("touchend", handleTouchEndWindow);
     };
-  }, [selectionStarted, startRow, endRow, startColumn, endColumn, props]);
+  }, [
+    selectionStarted,
+    startRow,
+    endRow,
+    startColumn,
+    endColumn,
+    value,
+    onChange,
+    selectedTask,
+  ]);
 
   const handleTouchStartCell = (e) => {
     const isLeftClick = e.button === 0;
@@ -67,7 +80,7 @@ export const TableDragSelect = (props) => {
   };
 
   const renderRows = () => {
-    return React.Children.map(props.children, (tr, i) => {
+    return React.Children.map(children, (tr, i) => {
       return (
         <tr key={i} {...tr.props}>
           {React.Children.map(tr.props.children, (cell, j) => {
@@ -76,7 +89,7 @@ export const TableDragSelect = (props) => {
                 key={j}
                 onTouchStart={handleTouchStartCell}
                 onTouchMove={handleTouchMoveCell}
-                task={props.value[i].tasks[j - 1]}
+                task={value[i].tasks[j - 1]}
                 beingSelected={isCellBeingSelected(i, j - 1)}
                 {...cell.props}
               >
@@ -107,20 +120,6 @@ export const TableDragSelect = (props) => {
 };
 
 const Cell = (props) => {
-  const tdRef = useRef(null);
-
-  const handleTouchStart = (e) => {
-    if (!props.disabled) {
-      props.onTouchStart(e);
-    }
-  };
-
-  const handleTouchMove = (e) => {
-    if (!props.disabled) {
-      props.onTouchMove(e);
-    }
-  };
-
   let {
     className = "",
     disabled,
@@ -131,7 +130,22 @@ const Cell = (props) => {
     ...otherProps
   } = props;
 
-  let style = task ? { background: task.color, color: "white" } : {};
+  const tdRef = useRef(null);
+
+  const handleTouchStart = (e) => {
+    if (!disabled) {
+      onTouchStart(e);
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (!disabled) {
+      onTouchMove(e);
+    }
+  };
+
+  let style =
+    task && !disabled ? { background: task.color, color: "white" } : {};
 
   if (disabled) {
     className += " cell-disabled";

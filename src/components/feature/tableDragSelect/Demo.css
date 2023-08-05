@@ -11,6 +11,10 @@ td.name-cell {
   width: 160px;
 }
 
+.table-drag-select td.name-cell.cell-disabled {
+  background: coral !important;
+}
+
 .table-drag-select td.cell-enabled {
   color: #806E52;
   background-color: #FBF1E8;
@@ -19,6 +23,7 @@ td.name-cell {
 /* Cells that cannot be interacted with */
 .table-drag-select td.cell-disabled {
   /* Put yer css here */
+  background: black !important;
 }
 
 /* Cells that have been selected */

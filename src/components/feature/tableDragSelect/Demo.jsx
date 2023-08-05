@@ -39,16 +39,13 @@ export const Demo = () => {
         {userTask.tasks.map((task, index) => {
           if (task) {
             return (
-              <td
-                key={task.id}
-                style={{ background: task.color, color: "white" }}
-              >
+              <td disabled={index === 3} key={task.id}>
                 {task?.taskName}
               </td>
             );
           }
 
-          return <td key={index} />;
+          return <td disabled={index === 3} key={index} />;
         })}
       </tr>
     ));
