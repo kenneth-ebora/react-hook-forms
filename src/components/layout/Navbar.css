@@ -1,6 +1,6 @@
 .navbar {
   height: 1.5rem;
-  background: rgb(36, 36, 36);
+  background: var(--nav-bg-color);
   padding: 1rem;
   color: white;
   font-family: "Roboto", sans-serif;
